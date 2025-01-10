@@ -1,4 +1,4 @@
-# Gaem
+# Gaem braindump
 
 ## so what game?
 
@@ -32,7 +32,7 @@ Well, it's the core gameplay loop. More specifically, though:
   1. Increase `reputation` with the `hub`.
   2. Buy `hub`-specific items. Weapons, Gear items, consumables, cosmetics - whatever.
 
-## random thigns I thought of but there's not enough context
+## random thigns I thought of but there's not enough context (maybe there is now cause I added some context)
 
 **Concept of `upgrades`**
 
@@ -50,6 +50,8 @@ Any `upgrade` for character should be interesting. I know this is vague but what
 
 I guess what I'm trying to say here, these `upgrades` should be gameplay-altering instead of flat stat buffs.
 
+> Another, perhaps better idea is a concept of jewel. You can attach it to weapon, gear item or character and it would add an effect. These jewels would be tradable, account-wide and have rank. You'd need N lower rank jewels to craft a higher rank one (behold arcanes). This rank would be disconnected from power level.
+
 **Concept of power level**
 
 This is a way to battle power creep over time in the game. Honestly I myself only have a vague idea on how to implement this. But in essence:
@@ -58,19 +60,20 @@ This is a way to battle power creep over time in the game. Honestly I myself onl
   - basic `expeditions` accessible directly through the hub would have `power level` equal to the season minimum??
 - via various activities, players would gain `power level` up to a (seasonal?) cap.
 - instead of players doing more damage with their `power level`, we take the relative difference between the `expedition` `power level` and the player `power level`.
-- `damage multiplier = e ^ ((player_pl - expedition_pl) / 15)` - random formula I crafted, exponential scaling means you can breeze through lower `power level` `expeditions` and `expeditions` that are higher are way harder, or impossible to complete. This however brings issues.
+- `damage multiplier = e ^ ((player_pl - expedition_pl) / 42)` - random formula I crafted, exponential scaling means you can breeze through lower `power level` `expeditions` and `expeditions` that are higher are way harder, or impossible to complete. This however brings issues.
   - We should restrict rewards from `expeditions` that are way below the player's `power level`
   - Issue of "bussing" lower `power level` players through missions is an issue - maybe restrict entry if the difference is too high altogether.
 
 `Power level` is just average of armor and weapon `power level`. Weapon `power level` likely weighted slightly higher.
+
+> The formula mentioned means that if player power level is equal to expedition power level, the damage multiplier is 1.0x. Every 10 power level disparity changes this multiplier by a factor of ~0.78x (or ~1/0.78x). Of course the scaling remains exponential so the numbner is just for illustration. This also means that a power level 100 player does 10x the damage to power level 1 expedition enemies. Honestly, no idea if this is too much, too little, just the right amount, or if it's entirely irrelevant. Can always hard cap it to a number like... 2x if need be. The other way around should however be uncapped, to make higher level keys increasingly harder.
 
 **Concept of `seasons`**
 
 Game being `seasonal` would keep players invested regularly. It would alleviate the notion of "having completed the game" (at least every now and then).
 
 - each `season` would bring new content to the game. New `hub`, new system to interact with, new weapons, new characters? - maybe a selection of said things.
-- `power level` cap and floor would reset each season. Meaning players would "keep their stuff" but this "stuff" would have to be brought up in `power level` again and upgraded via the `season`-specific systems.
-- old `season` upgrades would become ineffective (or less effective) - random idea - give each upgrade a `power level`, too, and cap it at that `season's` cap.
+- `power level` cap and floor would increase each season. Meaning players would "keep their stuff" but this "stuff" would have to be brought up in `power level` again and upgraded via the `season`-specific systems.
 
 How do we deal with `power level` creep? Or is this concept future proof enough? If each `season` has +100 `power level` increase, and a `season` lasts for about 6 months, we'd have plenty of time before it gets to "weird" levels.
 
@@ -80,7 +83,7 @@ We'd need to balance the `power level` gain against hours of playtime needed. Ma
 
 Irrelevant content is bad for the game. New `season` should introduce new content but not entirely make old content obsolete.
 
-Let's say we're in the second season. Base `expeditions` in the `hub` are `power level` 100. Defeating a base Dungeon `expedition` boss awards a level 1 `key`. This is is for a random set of N `expeditions` from any of the `season` `hubs` (basically any `expedition` in the game). Last `expedition` on the key would always be Dungeon `type` of that given `hub`. This `key` lets you run those specific `expeditions` at an increased difficulty. Let's say `base_pl + key_level * 5` so in this example, `power level` 105.
+Let's say we're in the second season. Base `expeditions` in the `hub` are `power level` 100. Defeating a base Dungeon `expedition` boss awards a level 1 `key`. This is is for a random set of N `expeditions` from any of the `season` `hubs` (basically any `expedition` in the game). Last `expedition` on the `key` would always be Dungeon `type` of that given `hub`. This `key` lets you run those specific `expeditions` at an increased difficulty. Let's say `base_pl + key_level * 5` so in this example, `power level` 105.
 
 You can share this `key` with other players, entering these `expeditions` back to back. These `expeditions`, along with the increased difficulty, will be somehow failable. Let's say normal "kill all enemies in the map" `expedition` doesn't have a timer but this one would. Same for the Dungeon `type`. There are now multiple outcomes:
 
@@ -101,7 +104,7 @@ You can share this `key` with other players, entering these `expeditions` back t
 
 The `key` level will be uncapped. Players can go as high as they please, want or are able to. Reward `power level` will however eventually cap at the `season` max. If we consider that each `key` drop rewards at `key_pl - 5`, rewards would stop scaling at level 21 `key`, or in this example, 205 `power level`. Note that this is higher than the `season` max `power level` so the scaling formula needs to be adjusted here.
 
-NPC in the `hub` will be providing service to drop your `key` by 1 level, but reroll its `expedition` set.
+NPC in the `hub` will be providing service to drop your `key` by 1 level, but reroll its `expedition` set (or not, that could be chosen by the player).
 
 > This could have some notion of weekly rewards based on how high keys and how many you've completed. Maybe cap direct key rewards at lower power level and you'd only get to max power level through these weekly rewards.
 
@@ -111,9 +114,7 @@ Let's start from the beginning. It's `season` 2 and I'm a new player. I log in, 
 
 You're then thrown out to the current `season` `hub` to look around. Different NPCs will want to talk to you and tell you what the heck you're supposed to be doing - `expeditions`. You do enough of `power level` 100 expeditions to get some currency, you team up (or not...) and beat the base Dungeon. You have a 105 `key` and some currency now. NPC tells you all about the `keys`. You first go to the `season` gear vendor and buy all the pieces (after running some more missions because you didn't have enough currency). This gear is 100 `power level` and it will take you through the entire `season`. If upgraded. Players who played in the previous `season` could just trade their upgraded gear pieces for the new `season` gear directly.
 
-You can also vendor for `season` specific `character upgrades` at 100 `power level`.
-
-You them team up (or not...) for your first `key`. You complete it just in time and you get a 100 `power level` `gemstone` - 100? that's useless! I already have 100 `power level` gear. That's fine - gemstones can be merged into higher tier ones, to up to a cap (more on this later). Anyway, you also get a 110 `key` now! And you get a `character upgrade` (as talked about previously) from the reward pool of that `season` at `105` power level!
+You them team up (or not...) for your first `key`. You complete it just in time and you get a 100 `power level` `gemstone` - 100? that's useless! I already have 100 `power level` gear. That's fine - gemstones can be merged into higher tier ones, to up to a cap (more on this later). Anyway, you also get a 110 `key` now! And you get a `jewel` (as talked about previously) from the reward pool of that `season` at `105` power level!
 
 You succesfully complete your second `key` and get a 105 `gemstone`. Now let's head to the smithy and apply this `gemstone` to one of our `season` gear pieces. Voila! Your're now slightly stronger and can have a shot at your 115 `key`.
 
@@ -137,23 +138,35 @@ The competitive element of completing hard `keys` fast can be transformed to ing
 
 Of course, the graphics, the gameplay, the combat, the balance - all would be incredibly important in order to keep players interested.
 
-> Power level is nice but it blurs the line between someone who's played for 1000 hours that season and someone who's played for 2 hours. They still see the same numbers, similar gameplay, but the `expedition` `power level` is just... higher. **There needs to be nother power-progression, gameplay-altering system in place** specifically to address this issue - Perhaps higher level keys would actually drop other than the basic gear items that would have some special effects, look different, alter gameplay.
+Also need to figure out the "details" like for example the setting of the game. Or a story to the game.
+
+> High level content needs to support endless replayability - it would reward valuable items that can then be traded.
+
+> Power level is nice but it blurs the line between someone who's played for 1000 hours that season and someone who's played for 2 hours. They still see the same numbers, similar gameplay, but the `expedition` `power level` is just... higher. **There needs to be another power-progression, gameplay-altering system in place** specifically to address this issue - Perhaps higher level keys would actually drop other than the basic gear items that would have some special effects, look different, alter gameplay.
 
 > Dev organized tournamets of who completes tough keys faster with live streams would be amazing here. Our own esports.
 
 ## are there some shiny items for me to get?
 
-Perhaps, this is largely TBD. There could be some rare drops from say level 20+ `keys` that can then be crafted into the `season's` legendary item, that would have a slight boost in `power level` over the `season` cap and some extra effect.
+Perhaps, this is too much of a detail IMO at the momnent. There could be some rare drops from say level 20+ `keys` that can then be crafted into the `season's` legendary item, that would have a slight boost in `power level` over the `season` cap and some extra effect.
 
 ## how the hell do characters and their gearing work?
 
-Vague idea but. Same gear on different characters would have different effects. It would also be transferrable. Or universaly usable within that account. Meaning you can swap character at any time - you would just have to collect new `character upgrades`.
+Vague idea but. Same gear on different characters would have different effects. It would also be transferrable. Or universaly usable within that account. Meaning you can swap character at any time - you would just have to collect new `jewels`.
 
-Same with weapon.
+Weapons is a category that I'm not decided on yet. Does each character have its own weapon type? or can we freely swap? Can a "mage" also run an "ak-42"? I'd like to give freedom but at the same time, keep it contained.
+
+I'd like a notion of many different characters slowly being added to the game. Question is, how do you get these?
 
 ## is there a notion of account progression? or new account in a new `season` is basically identical to a veteran one?
 
 Well that's a tough question. I want `seasons` to be a reset in player power. Not a fan of giving old player a significat advantage. Perhaps some stats associated with the account to show how much the player has played in different seasons. Perhaps an account "level" that increases the more you play over time, or based on how many of the game's items you've collected.
+
+## how do devs make $$$?
+
+Purchase special ingame currency. For now just that. This currency can be use to buy cosmetics, maybe some gear upgrade slots (if I wanna slap a jewel on a gear piece, maybe I have to use an item to make a hole first. This can be farmable, or purchasable). MAAYBE slight pay-to-skip .No p2w though - player power cannot be purchased. Meaning you cannot buy `power level` 200 `gemstones` for $$ currency. You could maybe trade them with other players, though. Right. The same currency is used for player to player trading.
+
+What could make this game quite interesting is the option to cash out to uh... crypto?
 
 ## what is the MVP?
 
@@ -161,3 +174,7 @@ Well that's a tough question. I want `seasons` to be a reset in player power. No
 - couple playable characters
 - some upgrades
 - key system working
+
+## other random ideas
+
+- rare items vendor coming every N weeks, appears when you complete a given `expedition`
